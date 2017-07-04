@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+</head>
+<style type="text/css">
+	.nav{width:300px;background: #fff;}
+	.nav:after,.nav:before{display: table;content:"";line-height: 0px;}
+	.nav-menu{width:100%;}
+	.nav-menu span{height:20px;}
+	.nav-item{display: none;}
+	.nav-menu .nav-item.show{color:red;display: block;}
+	.nav-menu .nav-item>div{padding:0px 15px 5px 25px;background: #222;}
+	.nav-item>div:hover{background: #eee;}
+</style>
+<body>
+	<div class="nav bb">
+		<div class="nav-menu">
+			<span>title</span>
+			<div class="nav-item show">
+				<div>
+					<span>24</span>
+					<div class="nav-item">
+						<div>
+							<span>24</span>
+							<div class="nav-item">
+								<div>5</div>
+								<div>23</div>
+								<div>23</div>
+							</div>
+						</div>
+						<div>23</div>
+						<div>23</div>
+					</div>
+				</div>
+				<div>23</div>
+				<div>23</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+debugger;
+	$(".nav-item div span").click(function(){
+		$(this).next(".nav-item").toggleClass("show");
+	});
+</script>
+</html>

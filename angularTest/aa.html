@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link rel="stylesheet" type="text/css" href="css/layout.css"/>
+	<script type="text/javascript"src="js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<style type="text/css">
+	html,body{margin: 0; padding: 0;}
+	html{
+	  filter:grayscale(100%);
+	  -moz-filter:grayscale(100%);
+	  -o-filter:grayscale(100%);
+	  -webkit-filter:grayscale(100%);
+	}
+	.slider{width:960px;margin:auto;overflow:hidden;}
+	ul{border:1px solid red;}
+	ul li{float: left; width:100px;}
+	.test{width:500px; height:300px; margin-left:50px; padding:20px; border:2px solid red; background: red; }
+	.hae{
+		height:100%;
+		border:1px solid #000;
+	}
+	.hae1{float: left; width:190px;height: 100%}
+	.hae2{margin-left:190px;}
+	.test{cursor: pointer; pointer-events:auto; position: relative; overflow: hidden;}
+	.test .a{position: absolute; width:100%;height:100%; left: 100%; text-align: center;transition:all 1.5s; z-index: 1;}
+	.test .next{left:100%;z-index: 2;}
+	.test .last{left:-100%; z-index: :2;}
+	.test .a.current{left:0%; z-index: 3;}
+	.test .a1{background: #666666;}
+	.test .a2{background: #AE8F00;}
+	.test .a3{background: #408080;}
+	.test .a4{background: #989898;}
+	.nextBtn{float:right; margin-top:-190px;}
+	</style>
+</head>
+<body>
+<!-- <div style="position: absolute; width:100%;height:100%; left:0;top:0;border: 1px solid red;"></div> -->
+<div class="" style="border:1px solid #000; background:#999;height:300px;">
+	<div class="" style="height:20px; opacity:0.5;">tesdfasdf</div>
+	<div class="hae hae1" data-options="count:1,time:400">left:190px;
+		<div class="one">
+			<a onclick="alert(11); return false;" href="javascript:void(0); return false;" style="border:1px solid red;">onclick</a>
+		</div>
+	</div>
+	<div class="hae hae2">margin-left:190px;
+		<input class="addDom" type="button" value="add">
+	</div>
+</div>
+
+<div id="test" class="test" data-options="{count:4,time:4000}">
+	<div class="a a1">center1</div>
+	<div class="a a2">center2</div>
+	<div class="a a3">center3</div>
+	<div class="a a4">center4<div></div></div>
+	<div class="nextBtn">click</div>
+</div>
+<div class="slider">
+	<div class="ul" data-options="a:1,b:2">
+		<ul>
+			<li class="li1">123</li>
+			<li class="li2">234<br>123</li>
+			<li class="li3">345</li>
+		</ul>
+		<div></div>
+		<div></div>
+	</div>
+	<div></div>
+</div>
+
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(".one").click(function(event) {
+			/* Act on the event */
+			debugger;
+			alert("one");
+		});
+		var n=1;
+		$(".addDom").click(function(){
+			var div=$("<div>");
+			div.text("第"+n+"次");
+			div.addClass('addDomDiv');
+			div.click(function(event) {
+				/* Act on the event */
+				console.log("click"+$(event.target).text());
+			});
+			div.appendTo($(".hae2"));
+			n++;
+		});
+		$('.hae2').on('click','.addDomDiv',function(){
+			console.log($(this).text());
+		});
+		$("#comSelete").combobox({
+			valueField: 'id',    
+	        textField: 'text',
+			data:[{    
+			    "id":1,    
+			    "text":"text1"   
+			},{    
+			    "id":2,    
+			    "text":"text2"   
+			},{    
+			    "id":3,    
+			    "text":"text3",    
+			    "selected":true   
+			},{    
+			    "id":4,    
+			    "text":"text4"   
+			},{    
+			    "id":5,    
+			    "text":"text5"   
+			}],
+			onChange:function(){
+				alert("这是测试下拉框change事件");
+			}
+		});
+		var slider=window.slider={
+			sliderShow:function(jq,num){
+				var i=num||0;
+				var options=new Function("return"+jq.data("options"))();
+				var count=options.count;
+				jq.children('.a').eq(0).addClass('current');
+				slider.timer=setInterval(function(){
+					i++;
+					var next=(i==3)?0:(i+1);
+					var last=i-1;
+					if(i==count){
+						i=0;
+						next=i+1;
+					}
+					jq.children('.a').removeClass('current next last').eq(next).addClass('next').end().eq(last).addClass('last').end().eq(i).addClass('current');
+				},options.time);
+			},
+			nextClick:function(jq,num){
+				clearInterval(this.timer);
+				this.sliderShow(jq,jq);
+				var options=new Function("return"+jq.data("options"))();
+				var cut=jq.children('.current').index();
+				var count=options.count;
+				// cut=cut+1==count?
+				// console.log(cut);
+				// cut++;
+				// var next=(cut==count-1)?0:(cut+1);
+				// var last=cut-1;
+				// if(cut==count-1){
+				// 	cut=0;
+				// 	next=cut+1;
+				// }
+				// jq.children('.a').removeClass('current').eq(cut).addClass('current');
+			}
+		};
+		slider.sliderShow($(".test"));
+		$(".nextBtn").click(function(){
+			slider.nextClick($(".test"));
+		})
+		$(".hae1").click(function(e){
+			console.log(e.target);
+		});
+		$.data($("#test")[0],"foo",{a:1,b:2});
+		$.fn.slider=function(_a1,_a2){
+			if(typeof _a1=="string"){
+				$.fn.slider.methods[_a1](this,_a2)
+			}
+			_a1=_a1||{};
+			return this.each(function(index, el) {
+				var _a3=$.data(this,"slider");
+				if(_a3){
+					$.extend(_a3.options,_a2);
+				}else{
+					_a3=$.data(this,"slider",{
+						options:_a2
+					})
+				}
+			});
+		};
+		$.fn.slider.methods={
+			options:function(jq){
+				return $.data(jq[0],"slider").options;
+			}
+		}
+	});
+	$(function(){
+		$(".ul").slider();
+		var a=$(".ul").slider("options");
+		function swapArray(a,b){
+			var tem=a;
+			a=b;
+			b=tem;
+		}
+		function test(fullArray,start,end,number){//递归方法
+			
+
+			if(start>=end){
+				for(var i=0;i<number;i++){
+					// console.log(fullArray[i]);
+				}
+				console.log(total++);
+			}else{
+				// console.log(total);
+				for(var i=start;i<=end;i++){
+					swapArray(fullArray[start],fullArray[i]);
+					// console.log(fullArray);
+					test(fullArray,start+1,end,number);
+					swapArray(fullArray[start],fullArray[i]);
+				}
+			}
+			
+		}
+		var total=0;
+		var fullArray=[1,2,3,4];
+		test(fullArray,0,3,4);
+	});
+</script>
+</html>

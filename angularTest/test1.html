@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>自定义滚动条</title>
+<script type="text/javascript"src="js/jquery-1.6.2.min.js"></script>
+<style type="text/css">
+* {
+	position: relative;
+	margin: 0;
+	padding: 0
+}
+body {overflow: hidden;}
+.page {width: 100%;	background: blue}
+.scroll {width: 20px;height: 100%;background: green;position: fixed;right: 0px;top: 0;z-index: 2}
+.scroll>div {width: 20px;background: #fff}
+.page1,.page2,.page3{height: 400px;display: block;border: 1px solid red;}
+.page1 {background: #d3d3d3;}
+.page2 {background: #d9d9d9;}
+.page3 {background: #4d4d4d; white-space: nowrap; word-wrap: normal}
+</style>
+</head>
+<body>
+<div class="scroll">
+    <div></div>
+</div>
+<div class="page">
+    <div class="page1">
+    	<select>
+    		<option>11</option>
+    		<option>12</option>
+    		<option>13</option>
+    	</select>
+		<div class="testBtn">test</div>
+
+    </div>
+    <div class="page2"></div>
+    <div class="page3"></div>
+</div>
+
+</body>
+<script type="text/javascript">
+$(function() {
+
+	$(".testBtn").click(function(){
+
+	});
+	var w=$(window).height();
+	var s=$(".page").height();
+	var ds=w*w/s;
+	$(".scroll").height(w);
+	$(".scroll div").height(ds);
+	var a=0;
+	$("select").click(function(){
+		var input=$("<input type='text'>");
+		input.css({"position":"absolute","width":$(this).width()-18,"left":"0"});
+		// input.keyup(function(event) {
+		// 	 Act on the event 
+		// 	console.log($(this).val());
+		// });
+		input.blur();;
+		// $(this).blur();
+		$(this).parent().css({"position":"relative"}).append(input);
+	});
+	$(document).bind("mousewheel DOMMouseScroll", function (e) {
+		var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 11:-11)) ||  // chrome & ie
+		(e.originalEvent.detail && (e.originalEvent.detail > 0 ? -11:1));
+
+		// firefox
+		if (delta > 0) {
+			// 向上滚
+			console.log("wheelup");
+			a+=10;
+
+			if(a>0) {
+				a=0
+			}
+			console.log(a);
+
+			$(".page").css( {
+				"margin-top":a
+			}
+			);
+
+			$(".scroll>div").css( {
+				"margin-top":-a*w/s
+			}
+			)
+		}
+		else if (delta < 0) {
+			// 向下滚
+			console.log("wheeldown");
+			a-=10;
+
+			if((w-s)>a) {
+				a=w-s
+			}
+			$(".page").css( {
+				"margin-top":a
+			}
+			);
+			console.log(a*w/s);
+
+			$(".scroll>div").css( {
+				"margin-top":-a*w/s
+			}
+			)
+		}
+	}
+	)
+}
+);
+</script>
+</html>

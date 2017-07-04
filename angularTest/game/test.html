@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div class="aa">
+	<canvas id="aa" style="width:100%; height:100%;"></canvas>
+</div>
+</body>
+<script type="text/javascript">
+             var s = 40;
+	function draw1(id) {
+             var canvas = document.getElementById(id);
+             if (canvas == null)
+                 return false;
+             var context = canvas.getContext("2d");
+             context.fillStyle = "#EEEEFF";
+             context.fillRect(0, 0, 400, 300);
+             var n = 0;
+             var dx = 120;
+             var dy = 100;
+             context.beginPath();
+             context.fillStyle = 'rgb(100,255,100)';
+             context.strokeStyle = 'rgb(0,0,100)';
+             var x = Math.sin(0);
+             var y = Math.cos(0);
+             var dig = Math.PI / 15 * 11;
+             s+=1;
+             if(s>60){
+             	s=20;
+             }
+             for (var i = 0; i < 60; i++) {
+                 var x = Math.sin(i * dig);
+                 var y = Math.cos(i * dig);
+                 context.lineTo(dx + x * s, dy + y * s);
+             }
+             context.closePath();
+             context.fill();
+             context.stroke();
+         }
+         draw1("aa");
+         setInterval(function(){draw1("aa")},100);
+</script>
+</html>
